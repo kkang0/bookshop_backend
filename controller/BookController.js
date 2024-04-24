@@ -41,8 +41,13 @@ const allBooks = (req, res) => {
 
     console.log(results);
 
-    if (results.length) allBooksRes.books = results;
-    else return res.status(StatusCodes.NOT_FOUND).end();
+    if (results.length) {
+      results.map(function (result) {
+        result.pubDate = result.pub_date;
+        delete result.pub_date;
+      });
+      allBooksRes.books = results;
+    } else return res.status(StatusCodes.NOT_FOUND).end();
   });
 
   sql = "SELECT found_rows() AS found";

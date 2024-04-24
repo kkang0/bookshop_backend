@@ -25,7 +25,13 @@ const join = (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
 
-    return res.status(StatusCodes.CREATED).json(results);
+    // 성공적으로 INSERT
+    if ((results.affectedRows = 1)) {
+      return res.status(StatusCodes.CREATED).json(results);
+    }
+
+    // 실패하면
+    return res.status(StatusCodes.BAD_REQUEST).end();
   });
 };
 
