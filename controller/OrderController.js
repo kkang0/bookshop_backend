@@ -105,9 +105,13 @@ const viewOrders = async (req, res) => {
     });
   }
 
-  let sql = `SELECT orders.id, created_at, address, recipient, contact, book_title, total_quantity, total_price
-              FROM orders LEFT JOIN delivery ON orders.delivery_id = delivery.id`;
-  let [rows, fields] = await conn.query(sql);
+  let loginUserId = authorization.id;
+
+  let sql = `SELECT orders.id, created_at AS createdAt, address, recipient, contact, 
+              book_title AS bookTitle, total_quantity AS totalQuantity, total_price AS totalPrice
+              FROM orders LEFT JOIN delivery ON orders.delivery_id = delivery.id
+              WHERE user_id=?`;
+  let [rows, fields] = await conn.query(sql, loginUserId);
 
   return res.status(StatusCodes.OK).json(rows);
 };
@@ -137,7 +141,7 @@ const viewOrderDetail = async (req, res) => {
     dateStrings: true,
   });
 
-  let sql = `SELECT book_id, title, author, price, quantity
+  let sql = `SELECT book_id AS bookId, title, author, price, quantity
               FROM orderedBook LEFT JOIN books ON orderedBook.book_id = books.id
               WHERE order_id = ?`;
   let [rows, fields] = await conn.query(sql, [orderId]);

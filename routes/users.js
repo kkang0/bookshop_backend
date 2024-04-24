@@ -1,6 +1,5 @@
 const express = require("express"); // express module
-const router = express.Router();
-const conn = require("../mariadb"); // db module
+const userRouter = express.Router();
 const {
   join,
   login,
@@ -8,11 +7,18 @@ const {
   passwordReset,
 } = require("../controller/UserController"); // join moudle
 
-router.use(express.json());
+const {
+  joinValid,
+  loginValid,
+  pwReqResetValid,
+  pwResetValid,
+} = require("../validator/userValidator"); // 유효성 검사
 
-router.post("/join", join); // 회원가입
-router.post("/login", login); // 로그인
-router.post("/reset", passwordRequestReset); // 비밀번호 초기화 요청
-router.put("/reset", passwordReset); // 비밀번호 초기화
+userRouter.use(express.json());
 
-module.exports = router;
+userRouter.post("/join", joinValid, join); // 회원가입
+userRouter.post("/login", loginValid, login); // 로그인
+userRouter.post("/reset", pwReqResetValid, passwordRequestReset); // 비밀번호 초기화 요청
+userRouter.put("/reset", pwResetValid, passwordReset); // 비밀번호 초기화
+
+module.exports = userRouter;

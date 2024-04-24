@@ -13,7 +13,7 @@ const ensureAuthorization = (req, res) => {
 
       return decodedJwt;
     } else {
-      throw new ReferenceError("로그인 안되어있음");
+      throw new ReferenceError("로그인 안되어 있음");
     }
   } catch (err) {
     console.log(err.name);

@@ -4,16 +4,22 @@ const { StatusCodes } = require("http-status-codes"); // status code module
 
 // 카테고리 전체 도서 목록 조회 컨트롤러
 const allCategory = (req, res) => {
-  let sql = "SELECT * FROM category";
+  try {
+    let sql =
+      "SELECT category_id AS categoryID, category_name AS categoryName FROM category";
 
-  conn.query(sql, (err, results) => {
-    if (err) {
-      console.log(err);
-      return res.status(StatusCodes.BAD_REQUEST).end();
-    }
+    conn.query(sql, (err, results) => {
+      if (err) {
+        console.log(err);
+        return res.status(StatusCodes.BAD_REQUEST).end();
+      }
 
-    return res.status(StatusCodes.OK).json(results);
-  });
+      return res.status(StatusCodes.OK).json(results);
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(StatusCodes.BAD_REQUEST).end();
+  }
 };
 
 module.exports = {
