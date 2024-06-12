@@ -5,8 +5,7 @@ const { StatusCodes } = require("http-status-codes"); // status code module
 // 카테고리 전체 도서 목록 조회 컨트롤러
 const allCategory = (req, res) => {
   try {
-    let sql =
-      "SELECT category_id AS categoryID, category_name AS categoryName FROM category";
+    let sql = "SELECT category_id AS id, category_name AS name FROM category";
 
     conn.query(sql, (err, results) => {
       if (err) {
